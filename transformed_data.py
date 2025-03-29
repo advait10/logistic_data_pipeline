@@ -3,7 +3,7 @@ import boto3
 from io import StringIO
 from _datetime import datetime
 
-
+loc = '/home/advait/PycharmProjects/logistic_data_pipeline/SCMS_Delivery_History_Dataset.csv'
 # fetching buckets from AWS S3
 def list_bucket():
     s3 = boto3.client('s3')
@@ -36,10 +36,17 @@ def extract_col(df):
                  'Weight_Kilograms_', 'Freight_Cost_USD_', 'Line_Item_Insurance_USD_']]
 
     new_df = new_df.rename(columns=lambda x: x.rstrip("_"))
-
     return new_df
 
 
+def upload_csv_to_s3(new_df):
+    s3 = boto3.client('s3')
+    convert_csv = new_df.to_csv('SCMS_Delivery_History_Dataset.csv',index=False)
+    s3.upload_file(loc, 'supply-chain-processed-dataaaa', 'SCMS_Delivery_History_Dataset.csv')
+    return "Upload data successfully to target bucket"
+
 a = list_bucket()
 b = rename_col(a)
-print(extract_col(b))
+c = extract_col(b)
+print(upload_csv_to_s3(c))
+
