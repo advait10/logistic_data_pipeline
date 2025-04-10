@@ -43,7 +43,7 @@ def upload_csv_to_s3(new_df):
     s3 = boto3.client('s3')
     convert_csv = new_df.to_csv('SCMS_Delivery_History_Dataset.csv',index=False)
     s3.upload_file(loc, 'supply-chain-processed-dataaaa', 'SCMS_Delivery_History_Dataset.csv')
-    return "Upload data successfully to target bucket !!!!"
+    return "Upload data successfully to target bucket"
 
 a = list_bucket()
 b = rename_col(a)
